@@ -1,5 +1,10 @@
 package de.wwu.controlstructures;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
+
 public class ControlStructures {
 
 	private final Numbers numbers = new Numbers();
@@ -19,11 +24,19 @@ public class ControlStructures {
 	 * In dreier Blöcke aufteilen. Benennung des dreier Blocks ausgeben.
 	 */
 	private String numberToString(int n) {
+		if (n == 0) {
+			return "null";
+		}
 		String word = "";
+		// Get the amount of blocks which each consist of three digits
 		int blockCount = (int) (Math.log10(n) / 3 + 1);
+		// Iterate in reverse order over the blocks to get the right order
 		for (int i = blockCount - 1; i >= 0; i--) {
+			// Extract the block from the number
 			int block = (int) (n / Math.pow(1000, i) % 1000);
-			String s = (block == 1 ? "eine" : blockToString(block));
+			// Generate the beginning of the number string and parse the block
+			String s = (i != 0 && block == 1 ? (block > 1 ? "eine" : "ein") : blockToString(block));
+			// Edge case for blocks with an ending word
 			if (i > 0) {
 				s += " " + numbers.get((int) Math.pow(10, i * 3));
 			}
@@ -33,24 +46,30 @@ public class ControlStructures {
 	}
 
 	private String blockToString(int n) {		
-		// Edge Cases
-	
+		// If the block is present in the look-up map just return it
 		if (numbers.containsKey(n)) {
 			return numbers.get(n);
 		}
 		
 		String s = "";
 		
+		// Get the left-most digit of the block
 		int digit = (int) (n / 100 % 10);
 		if (digit > 0) {
+			// Note: Edge case for one hundred
 			s += (digit == 1 ? "ein" : numbers.get(digit)) + " hundert ";
 		}
 		
+		// Get the two right-most digits as number
 		int ten = n % 100;
+		// Get the left digit of the two digit number
+		digit = ten % 10;
 		if (numbers.containsKey(ten)) {
 			s += numbers.get(ten);
 		} else {
-			s += numbers.get(ten % 10) + " und " + numbers.get(ten / 10 * 10);
+			// Put everything together
+			// Edge Case: Numbers above twenty need concatenation
+			s += (digit == 1 ? "ein" : numbers.get(digit)) + (ten > 20 ? " und " : "") + numbers.get(ten / 10 * 10);
 		}
 
 		return s;
@@ -96,9 +115,19 @@ public class ControlStructures {
 		// System.out.println(controlStructures.triangleTest(10, 10, 10));
 		// System.out.println(controlStructures.triangleTest(1, 1, 10));
 		// System.out.println(controlStructures.generateLockCodes());
-		for (int i = 0; i < 100000; i++) {
-			System.out.println(i);
-			System.out.println(controlStructures.numberToString(i));
+		try {
+			File file = new File("H:\\output.txt");
+			System.out.println(file.getAbsolutePath());
+			PrintStream writer = new PrintStream(file);
+			for (int i = 0; i <= 100000; i++) {
+				writer.println(i);
+				writer.println(controlStructures.numberToString(i));
+			}
+			writer.flush();
+			writer.close();
+			System.out.println("Finished!");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

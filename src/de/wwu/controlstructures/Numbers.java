@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Numbers extends HashMap<Integer, String> {
 
 	public Numbers() {
-		put(0, "null");
+		put(0, "");
 		put(1, "eins");
 		put(2, "zwei");
 		put(3, "drei");
