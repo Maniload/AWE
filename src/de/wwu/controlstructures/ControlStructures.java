@@ -20,7 +20,7 @@ public class ControlStructures {
 		return "Konstruierbar!";
 	}
 
-	private String numberToString(int n) {
+	public String numberToString(int n) {
 		if (n < 0) {
 			return "minus " + numberToString(-n);
 		}
