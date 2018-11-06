@@ -20,10 +20,10 @@ public class ControlStructures {
 		return "Konstruierbar!";
 	}
 
-	/*
-	 * In dreier Blöcke aufteilen. Benennung des dreier Blocks ausgeben.
-	 */
 	private String numberToString(int n) {
+		if (n < 0) {
+			return "minus " + numberToString(-n);
+		}
 		if (n == 0) {
 			return "null";
 		}
@@ -34,13 +34,22 @@ public class ControlStructures {
 		for (int i = blockCount - 1; i >= 0; i--) {
 			// Extract the block from the number
 			int block = (int) (n / Math.pow(1000, i) % 1000);
-			// Generate the beginning of the number string and parse the block
-			String s = (i != 0 && block == 1 ? (block > 1 ? "eine" : "ein") : blockToString(block));
-			// Edge case for blocks with an ending word
-			if (i > 0) {
-				s += " " + numbers.get((int) Math.pow(10, i * 3));
+			if (block > 0) {
+				// Generate the beginning of the number string and parse the block
+				String s = (i != 0 && block == 1 ? (i > 1 ? "eine" : "ein") : blockToString(block));
+				
+				word += s + " ";
+				if (block > 0) {
+					// Edge case for one million
+					if (i == 2 && block == 1) {
+						word += "million ";
+					}
+					// Edge case for blocks with an ending word
+					else if (i > 0) {
+						word += numbers.get((int) Math.pow(10, i * 3)) + " ";
+					}
+				}
 			}
-			word += s + " ";
 		}
 		return word;
 	}
@@ -115,20 +124,22 @@ public class ControlStructures {
 		// System.out.println(controlStructures.triangleTest(10, 10, 10));
 		// System.out.println(controlStructures.triangleTest(1, 1, 10));
 		// System.out.println(controlStructures.generateLockCodes());
-		try {
-			File file = new File("H:\\output.txt");
-			System.out.println(file.getAbsolutePath());
-			PrintStream writer = new PrintStream(file);
-			for (int i = 0; i <= 100000; i++) {
-				writer.println(i);
-				writer.println(controlStructures.numberToString(i));
-			}
-			writer.flush();
-			writer.close();
-			System.out.println("Finished!");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			File file = new File("H:\\output.txt");
+//			System.out.println(file.getAbsolutePath());
+//			PrintStream writer = new PrintStream(file);
+//			for (int i = -1000; i <= 10000; i++) {
+//				writer.println(i);
+//				writer.println(controlStructures.numberToString(i));
+//			}
+//			writer.flush();
+//			writer.close();
+//			System.out.println("Finished!");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		System.out.println(controlStructures.numberToString(Integer.MIN_VALUE + 1));
+		System.out.println(controlStructures.numberToString(Integer.MAX_VALUE));
 	}
 
 }

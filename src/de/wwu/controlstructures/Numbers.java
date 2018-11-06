@@ -28,7 +28,7 @@ public class Numbers extends HashMap<Integer, String> {
 		put(90, "neunzig");
 		put(100, "hundert");
 		put((int) Math.pow(10, 3), "tausend");
-		put((int) Math.pow(10, 6), "million");
+		put((int) Math.pow(10, 6), "millionen");
 		put((int) Math.pow(10, 9), "milliarden");
 	}
 
